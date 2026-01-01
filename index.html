@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Hobby Picker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="header">
+      <div class="badge">🎁 The Hobby Picker™</div>
+      <h1>Find your next hobby</h1>
+      <p class="sub">Answer instinctively. We’ll recommend a hobby (plus a couple of close matches).</p>
+    </header>
+
+    <section class="card">
+      <div class="progress-wrap" aria-label="Progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
+
+      <div id="content"></div>
+    </section>
+
+    <footer class="footer">
+      <div class="tiny">
+        Tip: you can run it again with a different mood and get a different hobby.
+      </div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

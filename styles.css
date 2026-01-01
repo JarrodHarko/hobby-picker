@@ -1,0 +1,223 @@
+:root{
+  --bg: #0b0f17;
+  --card: #121a28;
+  --card2:#0f1624;
+  --text: #e9eefc;
+  --muted: #a9b4d0;
+  --accent: #7aa2ff;
+  --accent2:#55e6c1;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 16px 40px rgba(0,0,0,0.45);
+  --radius: 18px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: radial-gradient(1200px 800px at 20% 10%, rgba(122,162,255,0.18), transparent 60%),
+              radial-gradient(1000px 700px at 80% 20%, rgba(85,230,193,0.12), transparent 55%),
+              var(--bg);
+  color: var(--text);
+}
+
+.app{
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 18px 36px;
+}
+
+.header{
+  margin-bottom: 18px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  background: rgba(122,162,255,0.14);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+}
+h1{
+  margin: 14px 0 6px;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.sub{
+  margin:0;
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 60ch;
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.progress-wrap{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.progress-bar{
+  flex:1;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 999px;
+  transition: width 250ms ease;
+}
+.progress-text{
+  min-width: 44px;
+  text-align:right;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.section-title{
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 10px 0 6px;
+}
+.question{
+  margin-top: 6px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+.help{
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.answers{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+@media(min-width: 720px){
+  .answers.two-col{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.btn{
+  width:100%;
+  text-align:left;
+  border-radius: 14px;
+  padding: 14px 14px;
+  border: 1px solid var(--border);
+  background: rgba(15,22,36,0.72);
+  color: var(--text);
+  cursor:pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+  position:relative;
+  overflow:hidden;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(122,162,255,0.35);
+  background: rgba(18,26,40,0.9);
+}
+.btn:active{
+  transform: translateY(0px);
+}
+.btn .label{
+  display:block;
+  font-weight: 650;
+  font-size: 16px;
+}
+.btn .desc{
+  display:block;
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.controls{
+  display:flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: space-between;
+}
+.smallbtn{
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor:pointer;
+}
+.smallbtn:hover{
+  border-color: rgba(122,162,255,0.35);
+}
+
+.result-title{
+  font-size: 24px;
+  margin: 4px 0 6px;
+}
+.result-top{
+  margin-top: 6px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(122,162,255,0.25);
+  background: rgba(122,162,255,0.08);
+}
+.hobby-name{
+  font-size: 20px;
+  font-weight: 800;
+}
+.hobby-meta{
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 14px;
+}
+.hobby-why{
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.runnerups{
+  margin-top: 12px;
+  display:grid;
+  gap: 10px;
+}
+.runner{
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+}
+.runner strong{display:block; margin-bottom:4px}
+
+.footer{
+  margin-top: 14px;
+  color: var(--muted);
+}
+.tiny{
+  font-size: 12px;
+  opacity: 0.9;
+}
