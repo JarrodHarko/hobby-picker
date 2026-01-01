@@ -1,5 +1,4 @@
-// ===== Expanded Hobby Picker Framework (v2) =====
-// Static single-page app: questions -> weighted scoring -> top matches.
+// ===== Expanded Hobby Picker Framework (v2) + Browse Tab =====
 
 const questions = [
   {
@@ -129,8 +128,7 @@ const questions = [
   },
 ];
 
-// Hobby definitions: tags indicate what each hobby "likes".
-// Scores are computed by matching user tag totals to hobby tag weights.
+// Hobby definitions
 const hobbies = [
   {
     id: "music_production",
@@ -150,14 +148,14 @@ const hobbies = [
     id: "photography",
     name: "📸 Photography",
     meta: "Outdoors/Indoors • Creative + technical • Shareable results",
-    why: "It’s fun immediately, but has endless depth. You can go casual (phone) or obsessive (lenses).",
-    weights: { outdoor: 2, indoor: 1, creative: 2, mental: 1, mastery: 2, share: 2, solo: 1, tangible: 2, exploration: 1, exploratory: 2, weatherOK: 1, budgetLow: 1, budgetMid: 2, budgetHigh: 2 }
+    why: "Fun immediately, endless depth. Go casual (phone) or obsessive (lenses).",
+    weights: { outdoor: 2, indoor: 1, creative: 2, mental: 1, mastery: 2, share: 2, solo: 1, tangible: 2, exploratory: 2, weatherOK: 1, budgetLow: 1, budgetMid: 2, budgetHigh: 2 }
   },
   {
     id: "video_editing",
     name: "🎬 Video Editing / Short Films",
     meta: "Indoors • Creative • Project-based • Shareable",
-    why: "Perfect if you enjoy storytelling and polishing something until it feels ‘right’. Huge satisfaction when you finish a piece.",
+    why: "Storytelling + polishing. Huge satisfaction when you finish a piece.",
     weights: { indoor: 2, creative: 3, tangible: 2, deepSessions: 2, mental: 2, share: 2, solo: 1, mastery: 2, spaceSmall: 2, mediumFriction: 1, highFriction: 1, budgetLow: 1, budgetMid: 2 }
   },
   {
@@ -192,7 +190,7 @@ const hobbies = [
     id: "language",
     name: "🗣️ Language Learning",
     meta: "Daily micro-sessions • Mental • Travel / social payoff",
-    why: "A great ‘small daily’ hobby. Feels rewarding quickly and opens doors socially and culturally.",
+    why: "A great ‘small daily’ hobby. Rewarding quickly and opens doors socially and culturally.",
     weights: { indoor: 2, mental: 2, frequent: 2, lowFriction: 2, mastery: 2, exploratory: 1, share: 1, socialSmall: 1, budgetLow: 2, spaceSmall: 2, selfTeach: 1, classFriendly: 2 }
   },
   {
@@ -206,21 +204,21 @@ const hobbies = [
     id: "rock_climbing",
     name: "🧗 Rock Climbing (Gym or Outdoor)",
     meta: "Physical + problem-solving • Social gym vibe • Clear progression",
-    why: "You get both movement and puzzles. Great community and very addictive progression.",
+    why: "Movement + puzzles. Great community and very addictive progression.",
     weights: { physical: 3, mastery: 2, competitive: 1, socialSmall: 2, outdoor: 1, indoor: 1, accomplishment: 2, mediumFriction: 2, weatherOK: 1, budgetMid: 2, spaceLarge: 1, coach: 1, classFriendly: 1 }
   },
   {
     id: "cycling",
     name: "🚴 Cycling / Trail Riding",
     meta: "Outdoors • Energising • Solo or group • Scales with commitment",
-    why: "Perfect if you want exploration + fitness and the option to go solo or join rides.",
+    why: "Exploration + fitness and the option to go solo or join rides.",
     weights: { outdoor: 3, physical: 2, exploratory: 2, weatherOK: 2, socialSmall: 1, solo: 1, accomplishment: 1, weekly: 2, spaceLarge: 2, budgetMid: 1, budgetHigh: 2 }
   },
   {
     id: "martial_arts",
     name: "🥋 Martial Arts",
     meta: "Physical • Structured learning • Strong community",
-    why: "If you like discipline, clear progression, and a social environment with coaching—this is a great fit.",
+    why: "If you like discipline, clear progression, and coaching—this is a great fit.",
     weights: { physical: 3, mastery: 2, coach: 2, classFriendly: 2, socialSmall: 2, accomplishment: 2, weekly: 2, budgetMid: 2, indoor: 1 }
   },
   {
@@ -231,10 +229,10 @@ const hobbies = [
     weights: { indoor: 2, mental: 3, mastery: 2, tangible: 2, exploratory: 2, mediumFriction: 2, gear: 1, spaceSmall: 1, spaceMedium: 1, budgetLow: 1, budgetMid: 2, selfTeach: 2 }
   },
   {
-    id: "brewing",
-    name: "☕ Specialty Coffee (or Home Brewing)",
+    id: "coffee",
+    name: "☕ Specialty Coffee",
     meta: "Process + ritual • Shareable • Gear-friendly",
-    why: "A great ‘ritual hobby’—you refine a process and share the results. Coffee is the easy entry point.",
+    why: "A great ‘ritual hobby’—refine a process and share the results.",
     weights: { indoor: 2, calm: 1, mastery: 2, tangible: 2, share: 2, gear: 2, mediumFriction: 2, budgetMid: 2, spaceSmall: 1, spaceMedium: 1 }
   },
   {
@@ -255,21 +253,44 @@ const hobbies = [
     id: "djing",
     name: "🎛️ DJing",
     meta: "Creative + technical • Shareable • Can be solo or social",
-    why: "A high-identity hobby: you build taste, learn skills, and can share it with friends or at events.",
+    why: "A high-identity hobby: build taste, learn skills, share with friends or at events.",
     weights: { indoor: 2, creative: 2, mental: 1, mastery: 2, share: 3, solo: 1, socialSmall: 1, gear: 3, mediumFriction: 2, highFriction: 1, budgetHigh: 2, budgetVeryHigh: 2, tangible: 1 }
   },
 ];
 
-// -------- State --------
+// -------- State (quiz) --------
 let index = -1; // -1 means intro
-let history = []; // for back navigation
-let userTags = {}; // accumulated tags
+let history = [];
+let userTags = {};
 
 // -------- DOM --------
 const content = document.getElementById("content");
+const progressWrap = document.getElementById("progressWrap");
 const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 
+const tabQuiz = document.getElementById("tabQuiz");
+const tabBrowse = document.getElementById("tabBrowse");
+
+let currentView = "quiz"; // "quiz" | "browse"
+
+// ---------- Tabs ----------
+function setActiveTab(view) {
+  currentView = view;
+  tabQuiz.classList.toggle("active", view === "quiz");
+  tabBrowse.classList.toggle("active", view === "browse");
+
+  // progress only makes sense in quiz
+  progressWrap.style.display = view === "quiz" ? "flex" : "none";
+
+  if (view === "quiz") renderIntro();
+  else renderBrowse();
+}
+
+tabQuiz.addEventListener("click", () => setActiveTab("quiz"));
+tabBrowse.addEventListener("click", () => setActiveTab("browse"));
+
+// ---------- Quiz helpers ----------
 function setProgress() {
   const total = questions.length;
   const answered = Math.max(0, index);
@@ -303,7 +324,7 @@ function renderIntro() {
     <p class="help">We score your preferences against a pool of hobbies, then show your best match + close runners-up.</p>
 
     <div class="answers">
-      <button class="btn" id="startBtn">
+      <button class="btn" id="startBtn" type="button">
         <span class="label">Start</span>
         <span class="desc">2 minutes, no wrong answers.</span>
       </button>
@@ -318,9 +339,9 @@ function renderIntro() {
 
 function renderQuestion() {
   setProgress();
-
   const q = questions[index];
   const twoCol = q.layout === "two";
+
   content.innerHTML = `
     <div class="section-title">${q.section}</div>
     <div class="question">${q.question}</div>
@@ -328,7 +349,7 @@ function renderQuestion() {
 
     <div class="answers ${twoCol ? "two-col" : ""}">
       ${q.answers.map((a, i) => `
-        <button class="btn" data-ans="${i}">
+        <button class="btn" data-ans="${i}" type="button">
           <span class="label">${a.text}</span>
           ${a.desc ? `<span class="desc">${a.desc}</span>` : ""}
         </button>
@@ -336,31 +357,25 @@ function renderQuestion() {
     </div>
 
     <div class="controls">
-      <button class="smallbtn" id="backBtn" ${history.length === 0 ? "disabled" : ""}>← Back</button>
-      <button class="smallbtn" id="restartBtn">Restart</button>
+      <button class="smallbtn" id="backBtn" type="button" ${history.length === 0 ? "disabled" : ""}>← Back</button>
+      <button class="smallbtn" id="restartBtn" type="button">Restart</button>
     </div>
   `;
 
-  // Answer click handlers
   document.querySelectorAll("[data-ans]").forEach(btn => {
     btn.addEventListener("click", () => {
       const ansIndex = Number(btn.getAttribute("data-ans"));
       const chosen = q.answers[ansIndex];
 
-      // Save history so we can go back
       history.push({ qIndex: index, tags: chosen.tags });
       addTags(chosen.tags);
 
       index += 1;
-      if (index >= questions.length) {
-        renderResults();
-      } else {
-        renderQuestion();
-      }
+      if (index >= questions.length) renderResults();
+      else renderQuestion();
     });
   });
 
-  // Back
   document.getElementById("backBtn").addEventListener("click", () => {
     if (history.length === 0) return;
     const last = history.pop();
@@ -369,30 +384,24 @@ function renderQuestion() {
     renderQuestion();
   });
 
-  // Restart
   document.getElementById("restartBtn").addEventListener("click", () => {
     renderIntro();
   });
 }
 
 function computeScores() {
-  // Weighted dot product: sum(userTagValue * hobbyWeight)
   const results = hobbies.map(h => {
     let score = 0;
     for (const [tag, val] of Object.entries(userTags)) {
       const w = h.weights[tag] || 0;
       score += val * w;
     }
-    return { hobby: h, score };
-  });
-
-  // Tie-breaker: slight preference for hobbies matching more tag keys
-  results.forEach(r => {
+    // tiny overlap tie-breaker
     let overlap = 0;
-    for (const tag of Object.keys(userTags)) {
-      if ((r.hobby.weights[tag] || 0) > 0) overlap += 1;
-    }
-    r.score += overlap * 0.05;
+    for (const tag of Object.keys(userTags)) if ((h.weights[tag] || 0) > 0) overlap += 1;
+    score += overlap * 0.05;
+
+    return { hobby: h, score };
   });
 
   results.sort((a, b) => b.score - a.score);
@@ -400,7 +409,6 @@ function computeScores() {
 }
 
 function renderResults() {
-  setProgress();
   progressFill.style.width = `100%`;
   progressText.textContent = `100%`;
 
@@ -409,13 +417,8 @@ function renderResults() {
   const runner1 = scores[1];
   const runner2 = scores[2];
 
-  const topScore = top.score;
-  const percent = (s) => {
-    // a friendly “fit” percentage relative to the top score
-    if (topScore <= 0) return 0;
-    const p = Math.round((s / topScore) * 100);
-    return Math.max(0, Math.min(100, p));
-  };
+  const topScore = top.score || 1;
+  const percent = (s) => Math.max(0, Math.min(100, Math.round((s / topScore) * 100)));
 
   content.innerHTML = `
     <div class="section-title">Results</div>
@@ -438,8 +441,9 @@ function renderResults() {
     </div>
 
     <div class="controls">
-      <button class="smallbtn" id="tryAgainBtn">Try again</button>
-      <button class="smallbtn" id="showTagsBtn">Show my picks</button>
+      <button class="smallbtn" id="tryAgainBtn" type="button">Try again</button>
+      <button class="smallbtn" id="showTagsBtn" type="button">Show my picks</button>
+      <button class="smallbtn" id="browseBtn" type="button">Browse all hobbies</button>
     </div>
 
     <div id="tagsPanel" style="display:none; margin-top:10px; padding:12px 14px; border:1px solid var(--border); border-radius:14px; background: rgba(255,255,255,0.03);">
@@ -455,7 +459,69 @@ function renderResults() {
     const panel = document.getElementById("tagsPanel");
     panel.style.display = panel.style.display === "none" ? "block" : "none";
   });
+  document.getElementById("browseBtn").addEventListener("click", () => setActiveTab("browse"));
 }
 
-// Start
-renderIntro();
+// ---------- Browse view ----------
+function renderBrowse(searchTerm = "") {
+  const term = searchTerm.trim().toLowerCase();
+
+  const filtered = hobbies
+    .slice()
+    .sort((a,b) => a.name.localeCompare(b.name))
+    .filter(h => {
+      if (!term) return true;
+      return (
+        h.name.toLowerCase().includes(term) ||
+        h.meta.toLowerCase().includes(term) ||
+        h.why.toLowerCase().includes(term)
+      );
+    });
+
+  content.innerHTML = `
+    <div class="section-title">Browse all hobbies</div>
+    <div class="question">Explore options without taking the quiz</div>
+    <p class="help">Search by keyword (e.g. “outdoors”, “creative”, “solo”, “gear”, “fitness”).</p>
+
+    <div class="browse-top">
+      <input class="search" id="searchBox" type="search" placeholder="Search hobbies…" value="${escapeHtml(searchTerm)}" />
+      <div class="count-pill">${filtered.length} shown</div>
+      <button class="smallbtn" id="clearBtn" type="button">Clear</button>
+    </div>
+
+    <div class="hobby-grid">
+      ${filtered.map(h => `
+        <div class="hobby-card">
+          <div class="topline">
+            <div class="name">${h.name}</div>
+            <div class="tag">ID: ${h.id}</div>
+          </div>
+          <div class="meta">${h.meta}</div>
+          <div class="why">${h.why}</div>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="controls">
+      <button class="smallbtn" id="goQuizBtn" type="button">← Back to quiz</button>
+    </div>
+  `;
+
+  const box = document.getElementById("searchBox");
+  box.addEventListener("input", (e) => renderBrowse(e.target.value));
+  document.getElementById("clearBtn").addEventListener("click", () => renderBrowse(""));
+  document.getElementById("goQuizBtn").addEventListener("click", () => setActiveTab("quiz"));
+}
+
+// small helper to avoid breaking HTML when pre-filling search box
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+// Start in quiz view
+setActiveTab("quiz");

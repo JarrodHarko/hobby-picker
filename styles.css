@@ -23,7 +23,7 @@ body{
 }
 
 .app{
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 28px 18px 36px;
 }
@@ -54,6 +54,29 @@ h1{
   color: var(--muted);
   font-size: 16px;
   max-width: 60ch;
+}
+
+.tabs{
+  margin-top: 14px;
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tab{
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 650;
+}
+.tab:hover{
+  border-color: rgba(122,162,255,0.35);
+}
+.tab.active{
+  background: rgba(122,162,255,0.16);
+  border-color: rgba(122,162,255,0.38);
 }
 
 .card{
@@ -133,8 +156,6 @@ h1{
   color: var(--text);
   cursor:pointer;
   transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
-  position:relative;
-  overflow:hidden;
 }
 .btn:hover{
   transform: translateY(-1px);
@@ -161,6 +182,7 @@ h1{
   gap: 10px;
   margin-top: 16px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .smallbtn{
   border-radius: 12px;
@@ -200,18 +222,6 @@ h1{
   font-size: 14px;
   line-height: 1.5;
 }
-.runnerups{
-  margin-top: 12px;
-  display:grid;
-  gap: 10px;
-}
-.runner{
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.03);
-}
-.runner strong{display:block; margin-bottom:4px}
 
 .footer{
   margin-top: 14px;
@@ -220,4 +230,71 @@ h1{
 .tiny{
   font-size: 12px;
   opacity: 0.9;
+}
+
+/* Browse view */
+.browse-top{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.search{
+  flex: 1;
+  min-width: 220px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: rgba(15,22,36,0.72);
+  color: var(--text);
+  outline: none;
+}
+.search::placeholder{ color: rgba(169,180,208,0.8); }
+.count-pill{
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  font-size: 13px;
+}
+.hobby-grid{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+@media(min-width: 720px){
+  .hobby-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.hobby-card{
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.03);
+  padding: 12px 14px;
+}
+.hobby-card .topline{
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.hobby-card .name{
+  font-weight: 850;
+}
+.hobby-card .tag{
+  color: var(--muted);
+  font-size: 12px;
+}
+.hobby-card .meta{
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 13px;
+}
+.hobby-card .why{
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
 }

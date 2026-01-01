@@ -11,11 +11,18 @@
     <header class="header">
       <div class="badge">🎁 The Hobby Picker™</div>
       <h1>Find your next hobby</h1>
-      <p class="sub">Answer instinctively. We’ll recommend a hobby (plus a couple of close matches).</p>
+      <p class="sub">Answer instinctively, or browse all hobby ideas.</p>
+
+      <!-- Tabs -->
+      <nav class="tabs" aria-label="Navigation">
+        <button class="tab active" id="tabQuiz" type="button">Hobby Picker</button>
+        <button class="tab" id="tabBrowse" type="button">Browse Hobbies</button>
+      </nav>
     </header>
 
     <section class="card">
-      <div class="progress-wrap" aria-label="Progress">
+      <!-- Quiz-only progress -->
+      <div class="progress-wrap" id="progressWrap" aria-label="Progress">
         <div class="progress-bar">
           <div class="progress-fill" id="progressFill" style="width: 0%"></div>
         </div>
@@ -27,7 +34,7 @@
 
     <footer class="footer">
       <div class="tiny">
-        Tip: you can run it again with a different mood and get a different hobby.
+        Tip: run the picker again with a different mood and you’ll get different results.
       </div>
     </footer>
   </main>
